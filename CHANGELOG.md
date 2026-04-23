@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0] - 2026-04-23
+
+### Changed
+
+- Migrated the recommended Logger integration from `config :logger, backends: [...]` to `logger_backends`.
+- Updated docs and tests to register the backend with `LoggerBackends.add/1`.
+- Removed `$levelpad` from the default log format to avoid Logger formatter deprecation warnings.
+- Modernized application startup to use current child specs instead of `Supervisor.Spec.worker/2`.
+- Updated project config to use `Config` instead of deprecated `Mix.Config`.
+- Added `.tool-versions` for `mise` with Erlang 28.3 and Elixir 1.19.4-otp-28.
+
 ## [1.1.0] - 2019-03-27
 
 ### Changed

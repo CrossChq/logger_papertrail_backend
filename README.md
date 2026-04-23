@@ -16,7 +16,7 @@ Available in [Hex](https://hex.pm/packages/logger_papertrail_backend). The packa
 
 ```elixir
 def deps do
-  [{:logger_papertrail_backend, "~> 1.1"}]
+  [{:logger_papertrail_backend, "~> 1.2"}]
 end
 ```
 
@@ -33,6 +33,17 @@ end
 ```elixir
 def application do
   [extra_applications: [:logger]]
+end
+```
+
+* Add `logger_backends` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:logger_backends, "~> 1.0"},
+    {:logger_papertrail_backend, "~> 1.2"}
+  ]
 end
 ```
 
@@ -57,14 +68,19 @@ config :logger, :logger_papertrail_backend,
   format: "$metadata $message"
 ```
 
-  Then config `:logger` to use the `LoggerPapertrailBackend.Logger`:
+  Then add the backend during application startup:
 
 ```elixir
-config :logger,
-  backends: [ :console,
-    LoggerPapertrailBackend.Logger
-  ],
-  level: :debug
+def start(_type, _args) do
+  LoggerBackends.add(LoggerPapertrailBackend.Logger)
+  Supervisor.start_link(children(), strategy: :one_for_one)
+end
+```
+
+  To update backend-specific options at runtime, use:
+
+```elixir
+LoggerBackends.configure(LoggerPapertrailBackend.Logger, level: :warning)
 ```
 
   _Note: if you have an umbrella project, use your top `config.exs`._
@@ -72,7 +88,7 @@ config :logger,
 * (Required) Follow "Add System" in your Papertrail dashboard to get `:host` values
 * (Optional) Set `:level` for this backend (overides global `:logger`-setting )
 * (Optional) Set specific `:system_name` in Papertrail, defaults to current application-name
-* (Optional) Set :format, defaults to `[$level] $levelpad$metadata $message`, see [Logger.Formatter](https://hexdocs.pm/logger/Logger.Formatter.html#content)
+* (Optional) Set :format, defaults to `[$level] $metadata $message`, see [Logger.Formatter](https://hexdocs.pm/logger/Logger.Formatter.html#content)
 * (Optional) Set `:metadata_filter` - metadata terms which must be present in order to log. See [LoggerFileBackend](https://github.com/onkel-dirtus/logger_file_backend#filtering-specific-metadata-terms) for examples.
 * Other supported options in config are `:colors`, `:metadata`. See :console-docs in [Logger](https://hexdocs.pm/logger/Logger.html#module-console-backend)
 
