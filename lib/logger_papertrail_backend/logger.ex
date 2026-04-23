@@ -57,7 +57,7 @@ defmodule LoggerPapertrailBackend.Logger do
   defp meet_level?(_lvl, nil), do: true
 
   defp meet_level?(lvl, min) do
-    Logger.compare_levels(lvl, min) != :lt
+    Logger.compare_levels(normalize_level(lvl), normalize_level(min)) != :lt
   end
 
   defp configure(device, options) do
@@ -147,8 +147,11 @@ defmodule LoggerPapertrailBackend.Logger do
   defp color_event(data, _level, %{enabled: false}), do: data
 
   defp color_event(data, level, %{enabled: true} = colors) do
-    [IO.ANSI.format_fragment(Map.fetch!(colors, level), true), data | IO.ANSI.reset]
+    [IO.ANSI.format_fragment(Map.fetch!(colors, normalize_level(level)), true), data | IO.ANSI.reset]
   end
+
+  defp normalize_level(:warn), do: :warning
+  defp normalize_level(level), do: level
 
   defp metadata_matches?(_md, nil), do: true
   defp metadata_matches?(_md, []), do: true # all of the filter keys are present
