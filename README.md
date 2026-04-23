@@ -52,7 +52,7 @@ end
 ```elixir
 config :logger, :logger_papertrail_backend,
   host: "logs.papertrailapp.com:<port>",
-  level: :warn,
+  level: :warning,
   system_name: "Wizard",
   metadata_filter: [],
   format: "$metadata $message"
@@ -64,7 +64,7 @@ config :logger, :logger_papertrail_backend,
 ```elixir
 config :logger, :logger_papertrail_backend,
   url: "papertrail://logs.papertrailapp.com:<port>/<system_name>",
-  level: :warn,
+  level: :warning,
   format: "$metadata $message"
 ```
 
@@ -86,7 +86,7 @@ LoggerBackends.configure(LoggerPapertrailBackend.Logger, level: :warning)
   _Note: if you have an umbrella project, use your top `config.exs`._
 
 * (Required) Follow "Add System" in your Papertrail dashboard to get `:host` values
-* (Optional) Set `:level` for this backend (overides global `:logger`-setting )
+* (Optional) Set `:level` for this backend (overrides global `:logger`-setting )
 * (Optional) Set specific `:system_name` in Papertrail, defaults to current application-name
 * (Optional) Set :format, defaults to `[$level] $metadata $message`, see [Logger.Formatter](https://hexdocs.pm/logger/Logger.Formatter.html#content)
 * (Optional) Set `:metadata_filter` - metadata terms which must be present in order to log. See [LoggerFileBackend](https://github.com/onkel-dirtus/logger_file_backend#filtering-specific-metadata-terms) for examples.

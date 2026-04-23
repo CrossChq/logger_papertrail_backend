@@ -22,7 +22,7 @@ defmodule LoggerPapertrailBackend.ConfiguratorTest do
   test "host-config from readme should work" do
     config = [
       host: "logs.papertrailapp.com:11",
-      level: :warn,
+      level: :warning,
       system_name: "Wizard",
       format: "$metadata $message"
     ]
@@ -31,7 +31,7 @@ defmodule LoggerPapertrailBackend.ConfiguratorTest do
   test "url-config from readme should work" do
     config = [
       url: "papertrail://logs.papertrailapp.com:11/Wizard",
-      level: :warn,
+      level: :warning,
       format: "$metadata $message"
     ]
     assert %Configuration{host: "logs.papertrailapp.com", port: 11, system_name: "Wizard"} == Configurator.configure_papertrail_target(config)

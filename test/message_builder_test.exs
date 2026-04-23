@@ -30,8 +30,8 @@ defmodule LoggerPapertrailBackend.MessageBuilderTest do
     test "should map :info to 14" do
       assert 14 == check_priority(:info)
     end
-    test "should map :warn to 12" do
-      assert 12 == check_priority(:warn)
+    test "should map :warning to 12" do
+      assert 12 == check_priority(:warning)
     end
     test "should map :error to 11" do
       assert 11 == check_priority(:error)
